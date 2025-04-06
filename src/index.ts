@@ -13,7 +13,18 @@ const server = new Server(
   },
   {
     capabilities: {
-      resources: {}, // Enable resources
+      resources: {
+        "hello://world": {
+          name: "Hello World Message",
+          description: "A simple greeting message",
+          mimeType: "text/plain",
+        },
+        "api://users": {
+          name: "Users List",
+          description: "List of users from external API",
+          mimeType: "application/json",
+        },
+      },
     },
   }
 );

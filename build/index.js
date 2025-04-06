@@ -7,7 +7,18 @@ const server = new Server({
     version: "1.0.0",
 }, {
     capabilities: {
-        resources: {}, // Enable resources
+        resources: {
+            "hello://world": {
+                name: "Hello World Message",
+                description: "A simple greeting message",
+                mimeType: "text/plain",
+            },
+            "api://users": {
+                name: "Users List",
+                description: "List of users from external API",
+                mimeType: "application/json",
+            },
+        },
     },
 });
 // List available resources when clients request them
