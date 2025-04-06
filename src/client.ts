@@ -11,15 +11,19 @@ async function main() {
     args: ["build/index.js"]
   });
   
-  await client.connect(transport);
-  
-  // Listar recursos disponíveis
-  const resources = await client.listResources();
-  console.log("Recursos disponíveis:", resources);
-  
-  // Ler o recurso de usuários
-  const content = await client.readResource({ uri: "api://users" });
-  console.log("\nLista de Usuários:", content);
+  try {
+    await client.connect(transport);
+    
+    // Listar recursos disponíveis
+    const resources = await client.listResources();
+    console.log("Recursos disponíveis:", resources);
+    
+    // Ler o recurso de usuários
+    const content = await client.readResource({ uri: "api://users" });
+    console.log("\nLista de Usuários:", content);
+  } catch (error) {
+    console.error("Erro ao executar o cliente:", error);
+  }
 }
 
 main().catch(console.error); 

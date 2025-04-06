@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+      "ai-agent-with-mcp": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@smithery/cli@latest",
+          "run",
+          "@moises-paschoalick/ai-agent-with-mcp",
+          "--key",
+          "dda23bec-caa6-4487-a1e9-eb74e22e33eb"
+        ]
+      }
+    }
+  }
