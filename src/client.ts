@@ -13,6 +13,9 @@ async function main() {
   
   try {
     await client.connect(transport);
+
+    const tools = await client.listTools();
+    console.log("Tools disponíveis:", tools);
     
     // Listar recursos disponíveis
     const resources = await client.listResources();
@@ -21,6 +24,11 @@ async function main() {
     // Ler o recurso de usuários
     const content = await client.readResource({ uri: "api://users" });
     console.log("\nLista de Usuários:", content);
+
+    // Chamando o callTool
+    const toolResult = await client.callTool({ name: "Users Tool", arguments: {} });
+    console.log("\nResultado da tool (callTool):", toolResult);
+
   } catch (error) {
     console.error("Erro ao executar o cliente:", error);
   }

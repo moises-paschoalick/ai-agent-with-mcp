@@ -65,23 +65,28 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 }));
 // Implementação da execução das tools
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-    if (request.params.uri === "hello://world") {
+    const { name } = request.params;
+    if (name === "Hello Tool") {
         return {
-            result: {
-                type: "text",
-                text: "Hello, World! This is a tool response!",
-            },
+            content: [
+                {
+                    type: "text",
+                    text: "Hello, World! This is a tool response!",
+                },
+            ],
         };
     }
-    if (request.params.uri === "api://users") {
+    if (name === "Users Tool") {
         try {
             const response = await fetch("http://3.238.149.189:8080/users");
             const data = await response.json();
             return {
-                result: {
-                    type: "text",
-                    text: JSON.stringify(data, null, 2),
-                },
+                content: [
+                    {
+                        type: "text",
+                        text: JSON.stringify(data, null, 2),
+                    },
+                ],
             };
         }
         catch (error) {
