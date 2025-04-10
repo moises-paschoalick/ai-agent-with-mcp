@@ -1,6 +1,9 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import FormData from "form-data";
+import fs from "fs";
 import { ListResourcesRequestSchema, ReadResourceRequestSchema, ListToolsRequestSchema, CallToolRequestSchema, } from "@modelcontextprotocol/sdk/types.js";
+import fetch from "node-fetch";
 // Initialize server with resource capabilities
 const server = new Server({
     name: "hello-mcp",
@@ -25,6 +28,20 @@ const server = new Server({
                     properties: {},
                 },
             },
+            "api://textract": {
+                name: "Textract Tool",
+                description: "Sends an image to the Textract API for analysis",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        filePath: {
+                            type: "string",
+                            description: "The local path to the image file to be uploaded",
+                        },
+                    },
+                    required: ["filePath"],
+                },
+            }
         },
         resources: {
             "hello://world": {
@@ -37,6 +54,11 @@ const server = new Server({
                 description: "List of users from external API",
                 mimeType: "application/json",
             },
+            "api://textract": {
+                name: "Textract Tool",
+                description: "Sends an image to the Textract API for analysis",
+                mimeType: "multipart/form-data",
+            }
         },
     },
 });
@@ -61,6 +83,21 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
                 properties: {},
             },
         },
+        {
+            uri: "api://textract",
+            name: "Textract Tool",
+            description: "Sends an image to the Textract API for analysis",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    filePath: {
+                        type: "string",
+                        description: "The local path to the image file to be uploaded",
+                    },
+                },
+                required: ["filePath"],
+            },
+        }
     ],
 }));
 // Implementação da execução das tools
@@ -91,6 +128,31 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }
         catch (error) {
             throw new Error(`Failed to fetch users: ${error?.message || "Unknown error"}`);
+        }
+    }
+    if (name === "Textract Tool") {
+        const { filePath } = request.params.arguments;
+        const form = new FormData();
+        form.append("file", fs.createReadStream(filePath));
+        try {
+            // Fixed FormData type compatibility issue
+            const response = await fetch("http://3.238.149.189:8080/api/textract/analyze", {
+                method: "POST",
+                body: form, // Type assertion to resolve the TypeScript error
+                headers: form.getHeaders(),
+            });
+            const result = await response.text();
+            return {
+                content: [
+                    {
+                        type: "text",
+                        text: result,
+                    },
+                ],
+            };
+        }
+        catch (error) {
+            throw new Error(`Textract upload failed: ${error?.message || "Unknown error"}`);
         }
     }
     throw new Error("Tool not found");
