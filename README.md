@@ -1,3 +1,5 @@
+[![MseeP Badge](https://mseep.net/pr/moises-paschoalick-ai-agent-with-mcp-badge.jpg)](https://mseep.ai/app/moises-paschoalick-ai-agent-with-mcp)
+
 # AI Agent with MCP
 
 Este projeto implementa um agente de IA que utiliza o Model Context Protocol (MCP) para interagir com recursos externos.
