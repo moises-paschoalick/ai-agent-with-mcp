@@ -1,6 +1,14 @@
-# AI Agent with MCP
+# Criando um MCP server com NodeJS (ai-agent-with-mcp)
 
 Este projeto implementa um agente de IA que utiliza o Model Context Protocol (MCP) para interagir com recursos externos.
+
+### O repositório inclui:
+
+Um servidor MCP funcional, com recursos REST para usuários e mensagens.
+
+Um cliente MCP para consumir esses recursos via protocolo.
+
+Exemplos práticos de como acessar os recursos por terminal, via API REST ou diretamente no Cursor.
 
 ## Recursos Disponíveis
 
@@ -76,6 +84,8 @@ Execute o seguinte comando no terminal:
 ```bash
 npx -y @smithery/cli@latest install @wonderwhy-er/desktop-commander --client cursor --key dda23bec-caa6-4487-a1e9-eb74e22e33eb
 ```
+
+Obs: a key mencionada é somente para exemplo, você precisa adicionar a sua.
 
 Reinicie o Cursor se estiver em execução.
 
